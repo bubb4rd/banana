@@ -24,10 +24,14 @@ module.exports = {
             const topTen = members.slice(0, 10);
             let desc = '';
             for (let i = 0; i < topTen.length; i++) {
-                let { user } = await interaction.guild.members.fetch(topTen[i].userId);
-                if (!user) return;
-                let userBalance = topTen[i].balance;
-                desc += `**${i + 1}. ${user}:** **\$${userBalance}**\n`;
+                try {
+                    let { user } = await interaction.guild.members.fetch(topTen[i].userId);
+                    if (!user) return;
+                    let userBalance = topTen[i].balance;
+                    desc += `**${i + 1}. ${user}:** **\$${userBalance}**\n`;
+                } catch (error) {
+                    console.log(error);
+                }
             }
             if (desc !== '') leaderboardEmbed.setDescription(desc);
             await interaction.reply({
